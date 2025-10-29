@@ -61,7 +61,9 @@ def send_answers(driver, filtered_words):
                 print(f'Attempting word: {word}')
                 input_box.send_keys(word)
                 input_box.send_keys(Keys.ENTER)
-                time.sleep(.3)
+                time.sleep(.2)
+                input_box.send_keys(Keys.CONTROL + 'a')
+                input_box.send_keys(Keys.DELETE)
                 words_tried += 1
             except:
                 break
