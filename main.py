@@ -8,7 +8,7 @@ import os
 
 start_time = time.perf_counter()
 load_dotenv()
-ALPHABET = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','ç','-','.']
+ALPHABET = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','ç','-','.',' ']
 all_words = open('dictionary.txt', encoding='utf-8').readlines()
 all_words = list(map(str.lower, all_words))
 all_words = list(map(uc.unidecode, all_words))
