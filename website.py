@@ -56,14 +56,17 @@ def send_answers(driver, filtered_words):
     input_box = driver.find_element(By.ID, "input")
     words_tried = 0
     for word in filtered_words:
-        if possible_word(driver, word):
-            print(f'Attempting word: {word}')
-            input_box.send_keys(word)
-            input_box.send_keys(Keys.ENTER)
-            time.sleep(.2)
-            input_box.send_keys(Keys.CONTROL + 'a')
-            input_box.send_keys(Keys.DELETE)
-            words_tried += 1
+        try:
+            if possible_word(driver, word):
+                print(f'Attempting word: {word}')
+                input_box.send_keys(word)
+                input_box.send_keys(Keys.ENTER)
+                time.sleep(.2)
+                input_box.send_keys(Keys.CONTROL + 'a')
+                input_box.send_keys(Keys.DELETE)
+                words_tried += 1
+        except:
+            break
     return words_tried
 def possible_word(driver, word):
     selector = f"//span[contains(., '{len(word)} letras')]"
@@ -76,3 +79,9 @@ def check_success(driver):
     total_points = total_points.text
     total_points = total_points.split('/')
     return total_points
+def get_words_from_today(driver):
+    words = []
+    words_html = driver.find_elements(By.CSS_SELECTOR, ".word-box.svelte-9jj3fa.found")
+    for word in words_html:
+        words.append(word.text)
+    return words

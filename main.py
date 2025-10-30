@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from dotenv import load_dotenv
+from datetime import date
 import unidecode as uc
 import website as web
 import util
@@ -8,8 +9,12 @@ import os
 
 start_time = time.perf_counter()
 load_dotenv()
-ALPHABET = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','ç','-','.',' ']
-all_words = open('dictionary.txt', encoding='utf-8').readlines()
+ALPHABET = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","ç","-",".",","," ","'"]
+all_words = []
+if os.path.isfile(f"{date.today()}.txt"):
+    all_words = open(f"{date.today()}.txt", encoding="utf-8").readlines()
+else:
+    all_words = open("dictionary.txt", encoding="utf-8").readlines()
 all_words = list(map(str.lower, all_words))
 all_words = list(map(uc.unidecode, all_words))
 util.remove_line_break(all_words)
@@ -32,6 +37,11 @@ words_tried = web.send_answers(driver, filtered_words)
 points = web.check_success(driver)
 correct_guesses = int(points[0])
 total_words = int(points[1])
+words = web.get_words_from_today(driver)
+results = open(f"{date.today()}.txt", 'w', encoding="utf-8")
+for i, word in enumerate(words):
+    words[i] = word + '\n'
+results.writelines(words)
 time.sleep(10)
 driver.quit()
 end_time = time.perf_counter()
