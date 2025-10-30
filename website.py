@@ -74,3 +74,8 @@ def possible_word(driver, word):
         return True
     else:
         return False
+def check_success(driver):
+    total_points = driver.find_element(By.CSS_SELECTOR, ".points.svelte-9jj3fa")
+    total_points = total_points.text
+    total_points = total_points.split('/')
+    return total_points
