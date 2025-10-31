@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 from dotenv import load_dotenv
-from datetime import date
 import unidecode as uc
+import datetime as dt
 import website as web
 import util
 import time
 import os
 
-start_time = time.perf_counter()
+start_time = dt.datetime.now()
+os.makedirs(f"{dt.date.today()}", exist_ok=True)
 load_dotenv()
 ALPHABET = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","ç","-",".",","," ","'"]
 all_words = []
-if os.path.isfile(f"{date.today()}.txt"):
-    all_words = open(f"{date.today()}.txt", encoding="utf-8").readlines()
+if os.path.isfile(f"{dt.date.today()}/words.txt"):
+    all_words = open(f"{dt.date.today()}/words.txt", encoding="utf-8").readlines()
 else:
     all_words = open("dictionary.txt", encoding="utf-8").readlines()
 all_words = list(map(str.lower, all_words))
@@ -38,17 +39,33 @@ points = web.check_success(driver)
 correct_guesses = int(points[0])
 total_words = int(points[1])
 words = web.get_words_from_today(driver)
-results = open(f"{date.today()}.txt", 'w', encoding="utf-8")
-for i, word in enumerate(words):
-    words[i] = word + '\n'
-results.writelines(words)
+if not os.path.isfile(f"{dt.date.today()}/words.txt"):
+    results = open(f"{dt.date.today()}/words.txt", 'w', encoding="utf-8")
+    for i, word in enumerate(words):
+        if '/' in word:
+            word = word.split('/')
+            word = word[0]
+        words[i] = word + '\n'
+    results.writelines(words)
 time.sleep(10)
 driver.quit()
-end_time = time.perf_counter()
-total_time = round(end_time-start_time, 2)
+end_time = dt.datetime.now()
+runtime = end_time-start_time
 
 print(f"\nWords that met the criteria: {len(filtered_words)}")
 print(f"Words attempted by the program: {words_tried}")
 print(f"Total words in today's game; {total_words}")
-print(f"Words correctly founf by the program: {correct_guesses} ({round((correct_guesses/total_words)*100, 2)}%)")
-print(f"Total runtime: {total_time} ({round(round(total_time)/60)}m{round(total_time)%60}s)")
+print(f"Words correctly found by the program: {correct_guesses} ({round((correct_guesses/total_words)*100, 2)}%)")
+print(f"Total runtime: {runtime}")
+
+log = 1
+while os.path.isfile(f"{dt.date.today()}/log{log}.txt"):
+    log += 1
+logs = open(f"{dt.date.today()}/log{log}.txt", 'w', encoding="utf-8")
+logs.write(f"Execution started at {start_time}\n")
+logs.write(f"Execution ended at {end_time}\n")
+logs.write(f"Total runtime: {runtime}\n")
+logs.write(f"\nTotal words in today's game; {total_words}\n")
+logs.write(f"Words that met the criteria: {len(filtered_words)}\n")
+logs.write(f"Words attempted by the program: {words_tried}\n")
+logs.write(f"Words correctly found by the program: {correct_guesses} ({round((correct_guesses/total_words)*100, 2)}%)")
