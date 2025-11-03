@@ -54,7 +54,7 @@ runtime = end_time-start_time
 
 print(f"\nWords that met the criteria: {len(filtered_words)}")
 print(f"Words attempted by the program: {words_tried}")
-print(f"Total words in today's game; {total_words}")
+print(f"Total words in today's game: {total_words}")
 print(f"Words correctly found by the program: {correct_guesses} ({round((correct_guesses/total_words)*100, 2)}%)")
 print(f"Total runtime: {runtime}")
 
@@ -65,7 +65,7 @@ logs = open(f"{dt.date.today()}/log{log}.txt", 'w', encoding="utf-8")
 logs.write(f"Execution started at {start_time}\n")
 logs.write(f"Execution ended at {end_time}\n")
 logs.write(f"Total runtime: {runtime}\n")
-logs.write(f"\nTotal words in today's game; {total_words}\n")
+logs.write(f"\nTotal words in today's game: {total_words}\n")
 logs.write(f"Words that met the criteria: {len(filtered_words)}\n")
 logs.write(f"Words attempted by the program: {words_tried}\n")
 logs.write(f"Words correctly found by the program: {correct_guesses} ({round((correct_guesses/total_words)*100, 2)}%)")
