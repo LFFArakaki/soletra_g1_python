@@ -1,0 +1,4 @@
+unidecode
+selenium
+dotenv
+numpy
